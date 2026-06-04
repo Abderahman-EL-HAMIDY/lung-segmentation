@@ -182,31 +182,33 @@ Due to the size of the COVID-QU-Ex augmented dataset at 169,600 pairs, training 
 
 ### CXR-Trained Models (OOD evaluation on COVID-QU-Ex, 16,960 samples)
 
-UNet++ / EfficientNet-B7: In-dist Dice 0.9949, In-dist IoU 0.9898, OOD Dice 0.9607, OOD IoU 0.9244
-UNet / EfficientNet-B4: In-dist Dice 0.9940, In-dist IoU 0.9881, OOD Dice 0.9603, OOD IoU 0.9236
-UNet++ / EfficientNet-B4: In-dist Dice 0.9939, In-dist IoU 0.9879, OOD Dice 0.9590, OOD IoU 0.9217
-DeepLabV3+ / EfficientNet-B4: In-dist Dice 0.9930, In-dist IoU 0.9861, OOD Dice 0.9606, OOD IoU 0.9241
-UNet++ / ResNet34: In-dist Dice 0.9925, In-dist IoU 0.9852, OOD Dice 0.9572, OOD IoU 0.9179
-MAnet / EfficientNet-B4: In-dist Dice 0.9914, In-dist IoU 0.9830, OOD Dice 0.9584, OOD IoU 0.9202
-UNet++ / ResNet50: In-dist Dice 0.9912, In-dist IoU 0.9826, OOD Dice 0.9540, OOD IoU 0.9122
+| Model | In-dist Dice | In-dist IoU | OOD Dice | OOD IoU |
+|-------|--------------|--------------|----------|----------|
+| UNet++ / EfficientNet-B7 | 0.9949 | 0.9898 | 0.9607 | 0.9244 |
+| UNet / EfficientNet-B4 | 0.9940 | 0.9881 | 0.9603 | 0.9236 |
+| UNet++ / EfficientNet-B4 | 0.9939 | 0.9879 | 0.9590 | 0.9217 |
+| DeepLabV3+ / EfficientNet-B4 | 0.9930 | 0.9861 | 0.9606 | 0.9241 |
+| UNet++ / ResNet34 | 0.9925 | 0.9852 | 0.9572 | 0.9179 |
+| MAnet / EfficientNet-B4 | 0.9914 | 0.9830 | 0.9584 | 0.9202 |
+| UNet++ / ResNet50 | 0.9912 | 0.9826 | 0.9540 | 0.9122 |
+
+---
 
 ### COVIDQU-Trained Models (OOD evaluation on CXR, 4,008 samples)
 
-UNet++ / EfficientNet-B7: In-dist Dice 0.9926, In-dist IoU 0.9853, OOD Dice —, OOD IoU —
-UNet++ / EfficientNet-B4: In-dist Dice 0.9921, In-dist IoU 0.9843, OOD Dice 0.9430, OOD IoU 0.8923
-UNet / EfficientNet-B4: In-dist Dice 0.9855, In-dist IoU 0.9714, OOD Dice 0.9573, OOD IoU 0.9182
-DeepLabV3+ / EfficientNet-B4: In-dist Dice 0.9878, In-dist IoU 0.9759, OOD Dice 0.9537, OOD IoU 0.9115
-MAnet / EfficientNet-B4: In-dist Dice 0.9848, In-dist IoU 0.9701, OOD Dice 0.9556, OOD IoU 0.9150
-UNet++ / ResNet50: In-dist Dice 0.9819, In-dist IoU 0.9645, OOD Dice 0.9552, OOD IoU 0.9143
-UNet++ / ResNet34: In-dist Dice 0.9821, In-dist IoU 0.9649, OOD Dice 0.9532, OOD IoU 0.9106
+| Model | In-dist Dice | In-dist IoU | OOD Dice | OOD IoU |
+|-------|--------------|--------------|----------|----------|
+| UNet++ / EfficientNet-B7 | 0.9926 | 0.9853 | — | — |
+| UNet++ / EfficientNet-B4 | 0.9921 | 0.9843 | 0.9430 | 0.8923 |
+| UNet / EfficientNet-B4 | 0.9855 | 0.9714 | 0.9573 | 0.9182 |
+| DeepLabV3+ / EfficientNet-B4 | 0.9878 | 0.9759 | 0.9537 | 0.9115 |
+| MAnet / EfficientNet-B4 | 0.9848 | 0.9701 | 0.9556 | 0.9150 |
+| UNet++ / ResNet50 | 0.9819 | 0.9645 | 0.9552 | 0.9143 |
+| UNet++ / ResNet34 | 0.9821 | 0.9649 | 0.9532 | 0.9106 |
 
-### Qualitative Observations
-
-During visual testing using the Streamlit apps on real chest X-ray images of varying quality, augmented models consistently produced clean and anatomically accurate lung masks. Baseline models showed acceptable performance on standard quality images but degraded significantly on poor quality or foggy images, with the DeepLabV3+ and MAnet baseline architectures producing fragmented or incomplete masks on difficult cases.
-
-When CLAHE pre-processing was applied through the enhancement toggle in the Streamlit app, even the poorly performing baseline models recovered substantially in segmentation quality on the same low-quality images. This demonstrates that image enhancement plays a meaningful role in model performance and partially compensates for the lack of augmentation diversity in training. The augmented models showed less sensitivity to pre-processing since they were already trained on diverse contrast and noise conditions.
 
 ---
+
 
 ## Best Model Selection
 
