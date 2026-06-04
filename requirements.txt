@@ -1,0 +1,32 @@
+# Deep Learning
+torch
+torchvision
+segmentation-models-pytorch
+
+# Image Processing
+opencv-python
+Pillow
+albumentations
+
+# Streamlit Apps
+streamlit
+
+# Pathology Detection
+torchxrayvision
+transformers
+
+# API
+fastapi
+uvicorn
+python-multipart
+pyngrok
+nest-asyncio
+
+# Data & Visualization
+numpy
+pandas
+matplotlib
+scikit-learn
+
+# Kaggle
+kagglehub
