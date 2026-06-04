@@ -270,13 +270,7 @@ Sample JSON response:
 
 ## Streamlit Applications
 
-**app_2.py** tests individual models or runs all models sequentially on an uploaded X-ray image. Supports both baseline and augmented model groups with image enhancement controls and displays mask, overlay and heatmap outputs.
-
-**app_compare.py** provides a side-by-side grid comparison of baseline versus augmented models for the same input image, with each row showing the same architecture trained with and without augmentation.
-
-**voting.py** combines multiple models through five voting strategies: majority vote, average probability, weighted average, union and intersection. Separate ensembles for baseline and augmented groups with adjustable threshold and per-model weight controls.
-
-**diagnose.py** uploads a chest X-ray and observes how lung segmentation affects pathology detection scores from TorchXRayVision models. Includes dedicated Tuberculosis detection via a HuggingFace ViT model and three masking strategies: black background, blur background and bounding box crop.
+**app.py** tests individual models or runs all models sequentially on an uploaded X-ray image. Supports both baseline and augmented model groups with image enhancement controls and displays mask, overlay and heatmap outputs.
 
 ---
 
@@ -290,10 +284,7 @@ pip install transformers
 Run applications:
 
 ```bash
-streamlit run app/app_2.py
-streamlit run app/app_compare.py
-streamlit run app/voting.py
-streamlit run app/diagnose.py
+streamlit run app/app.py
 ```
 
 ---
