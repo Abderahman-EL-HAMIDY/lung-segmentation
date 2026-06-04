@@ -136,15 +136,18 @@ Fast non-local means denoising to remove film grain and scanner noise. Parameter
 
 All models were implemented using the segmentation-models-pytorch library.
 
-Architecture: UNet++, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~20.9M
-Architecture: UNet++, Encoder: EfficientNet-B7, scSE Attention: Yes, Parameters: ~66.4M
-Architecture: UNet++, Encoder: ResNet50, scSE Attention: Yes, Parameters: ~32.5M
-Architecture: UNet++, Encoder: ResNet34, scSE Attention: Yes, Parameters: ~24.4M
-Architecture: UNet, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~19.8M
-Architecture: DeepLabV3+, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~17.6M
-Architecture: MAnet, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~22.1M
+- Architecture: UNet++, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~20.9M  
+- Architecture: UNet++, Encoder: EfficientNet-B7, scSE Attention: Yes, Parameters: ~66.4M  
+- Architecture: UNet++, Encoder: ResNet50, scSE Attention: Yes, Parameters: ~32.5M  
+- Architecture: UNet++, Encoder: ResNet34, scSE Attention: Yes, Parameters: ~24.4M  
+- Architecture: UNet, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~19.8M  
+- Architecture: DeepLabV3+, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~17.6M  
+- Architecture: MAnet, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~22.1M  
 
-UNet++ uses nested dense skip connections that reuse feature maps at multiple scales, making it more powerful than standard UNet for boundary-sensitive tasks. The scSE decoder attention recalibrates feature maps both spatially and channel-wise, improving segmentation of thin structures. DeepLabV3+ uses atrous convolutions and ASPP to capture multi-scale context without losing resolution. MAnet uses multi-scale feature aggregation with channel attention in both encoder and decoder paths.
+UNet++ uses nested dense skip connections that reuse feature maps at multiple scales, making it more powerful than standard UNet for boundary-sensitive tasks.  
+The scSE decoder attention recalibrates feature maps both spatially and channel-wise, improving segmentation of thin structures.  
+DeepLabV3+ uses atrous convolutions and ASPP to capture multi-scale context without losing resolution.  
+MAnet uses multi-scale feature aggregation with channel attention in both encoder and decoder paths.
 
 ---
 
