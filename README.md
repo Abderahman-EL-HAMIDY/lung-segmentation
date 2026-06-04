@@ -134,15 +134,19 @@ Fast non-local means denoising to remove film grain and scanner noise. Parameter
 
 ## Architectures
 
+## Architectures
+
 All models were implemented using the segmentation-models-pytorch library.
 
-- Architecture: UNet++, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~20.9M  
-- Architecture: UNet++, Encoder: EfficientNet-B7, scSE Attention: Yes, Parameters: ~66.4M  
-- Architecture: UNet++, Encoder: ResNet50, scSE Attention: Yes, Parameters: ~32.5M  
-- Architecture: UNet++, Encoder: ResNet34, scSE Attention: Yes, Parameters: ~24.4M  
-- Architecture: UNet, Encoder: EfficientNet-B4, scSE Attention: Yes, Parameters: ~19.8M  
-- Architecture: DeepLabV3+, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~17.6M  
-- Architecture: MAnet, Encoder: EfficientNet-B4, scSE Attention: No, Parameters: ~22.1M  
+| Architecture | Encoder | Attention | Parameters |
+|--------------|----------|-----------|------------|
+| UNet++ | EfficientNet-B4 | scSE: Yes | ~20.9M |
+| UNet++ | EfficientNet-B7 | scSE: Yes | ~66.4M |
+| UNet++ | ResNet50 | scSE: Yes | ~32.5M |
+| UNet++ | ResNet34 | scSE: Yes | ~24.4M |
+| UNet | EfficientNet-B4 | scSE: Yes | ~19.8M |
+| DeepLabV3+ | EfficientNet-B4 | scSE: No | ~17.6M |
+| MAnet | EfficientNet-B4 | scSE: No | ~22.1M |
 
 UNet++ uses nested dense skip connections that reuse feature maps at multiple scales, making it more powerful than standard UNet for boundary-sensitive tasks.  
 The scSE decoder attention recalibrates feature maps both spatially and channel-wise, improving segmentation of thin structures.  
