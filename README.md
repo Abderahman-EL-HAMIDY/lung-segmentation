@@ -23,17 +23,16 @@ This project builds a robust lung segmentation pipeline for chest X-ray images. 
 
 ## Project Structure
 
+- notebooks/
+  - augmented_notebooks/ — Training notebooks NB02–NB14 (augmented datasets)
+  - baseline_notebooks/ — Training on original datasets
+  - comparison_notebooks/ — Final comparison notebook (NB15)
 
-lung-segmentation/
+- app/
+  - app.py — Main testing app (single model or all models)
+  - improve_quality.py — Image enhancement utilities
 
-├── notebooks/
-│   ├── augmented_notebooks/       Training notebooks NB02-NB14 on augmented datasets
-│   ├── baseline_notebooks/        Training on original non-augmented datasets
-│   └── comparison_notebooks/      Final results comparison notebook (NB15)
-├── app/
-│   ├── app.py                     Main testing app (single model or all models)
-│   └── improve_quality.py         Image enhancement utilities
-└── requirements.txt
+- requirements.txt
 
 
 ---
