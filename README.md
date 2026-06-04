@@ -210,12 +210,31 @@ Due to the size of the COVID-QU-Ex augmented dataset at 169,600 pairs, training 
 ---
 
 
-## Best Model Selection
+## Selected Model
 
-Selected model: UNet++ with EfficientNet-B7 encoder trained on augmented CXR dataset.
+**Selected model:** UNet++ with EfficientNet-B7 encoder trained on augmented CXR dataset.
 
-This model was selected based on four criteria. First, it achieved the highest in-distribution performance with a Dice score of 0.9949 on the CXR test set. Second, it achieved the best cross-dataset OOD Dice of 0.9607 on COVID-QU-Ex despite never seeing that distribution during training, representing a generalization gap of only 0.0342. Third, EfficientNet-B7 is the largest encoder tested with approximately 66 million parameters using compound scaling across depth, width and resolution, combined with UNet++ nested skip connections and scSE decoder attention to capture fine-grained lung boundary details. Fourth, this model was successfully deployed as a production REST API confirming its practical viability for real-world inference.
+### Selection Criteria
 
+This model was selected based on four criteria:
+
+1. **Highest in-distribution performance**
+   - Dice score: 0.9949 on the CXR test set
+
+2. **Best cross-dataset generalization (OOD)**
+   - OOD Dice: 0.9607 on COVID-QU-Ex  
+   - Generalization gap: 0.0342  
+   - Despite no exposure to this distribution during training
+
+3. **Most powerful architecture tested**
+   - EfficientNet-B7 (~66M parameters)
+   - Compound scaling (depth, width, resolution)
+   - UNet++ nested skip connections
+   - scSE decoder attention for fine-grained lung boundary detail
+
+4. **Deployment success**
+   - Successfully deployed as a production REST API
+   - Demonstrated practical real-world inference capability
 ---
 
 ## Discussion
