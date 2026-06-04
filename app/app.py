@@ -13,7 +13,6 @@ import time
 import pandas as pd
 from improve_quality import ENHANCEMENT_FUNCTIONS, apply_clahe, apply_gamma
 
-# ── 1. Device & Transforms ────────────────────────────────────────────────────
 DEVICE    = "cuda" if torch.cuda.is_available() else "cpu"
 IMG_SIZE  = (256, 256)
 MEAN      = [0.485, 0.456, 0.406]
@@ -24,7 +23,6 @@ to_tensor = transforms.Compose([
     transforms.Normalize(mean=MEAN, std=STD),
 ])
 
-# ── 2. Model Folders ──────────────────────────────────────────────────────────
 OLD_MODELS_DIR = "old_models"
 NEW_MODELS_DIR = "new_models"
 
@@ -36,27 +34,12 @@ def get_model_files(folder):
 old_model_names = get_model_files(OLD_MODELS_DIR)
 new_model_names = get_model_files(NEW_MODELS_DIR)
 
-# ── 3. Architecture Detection ─────────────────────────────────────────────────
-# Both old and new models follow the same naming convention:
-#   {prefix}_{arch}_{encoder}_{dataset}_best.pth
-# Examples:
-#   new_models: unetpp_efficientnetb4_CXR_best.pth
-#   old_models: baseline_unetpp_efficientnetb4_CXR_best.pth
-#               baseline_unetpp_resnet50_COVIDQU_best.pth
-#               baseline_unetpp_resnet34_CXR_best.pth
-#               baseline_unet_efficientnetb4_CXR_best.pth
-#               baseline_deeplabv3plus_efficientnetb4_CXR_best.pth
-#               baseline_manet_efficientnetb4_CXR_best.pth
 
 def detect_arch(filename):
-    """
-    Detect architecture, encoder and training dataset from filename.
-    Works for both old_models (baseline_* prefix) and new_models.
-    Returns: (arch_display, arch_key, encoder, train_ds)
-    """
+    
     name = filename.lower()
 
-    # ── Encoder ───────────────────────────────────────────────────────────────
+    # Encoder
     if "efficientnetb7" in name or "efficientnet_b7" in name:
         encoder = "efficientnet-b7"
     elif "efficientnetb4" in name or "efficientnet_b4" in name:
@@ -66,10 +49,9 @@ def detect_arch(filename):
     elif "resnet34" in name:
         encoder = "resnet34"
     else:
-        encoder = "efficientnet-b4"   # safe default
+        encoder = "efficientnet-b4"  
 
-    # ── Architecture ──────────────────────────────────────────────────────────
-    # Check deeplabv3plus before unet to avoid partial matches
+    
     if "deeplabv3plus" in name or "deeplab" in name:
         arch_display = "DeepLabV3+"
         arch_key     = "deeplabv3plus"
@@ -86,7 +68,7 @@ def detect_arch(filename):
         arch_display = "UNet++"
         arch_key     = "unetpp"
 
-    # ── Training dataset ──────────────────────────────────────────────────────
+    # Training dataset
     if "covidqu" in name:
         train_ds = "COVIDQU"
     elif "_cxr" in name:
@@ -97,18 +79,15 @@ def detect_arch(filename):
     return arch_display, arch_key, encoder, train_ds
 
 
-# Keep old names as thin wrappers so nothing else in the file breaks
 def detect_new_model_arch(filename):
     return detect_arch(filename)
 
 def detect_old_model_arch(filename):
     arch_display, arch_key, encoder, train_ds = detect_arch(filename)
-    return arch_display, encoder, train_ds   # old callers expect 3-tuple
+    return arch_display, encoder, train_ds   
 
 
-# ── 4. Model Builder ──────────────────────────────────────────────────────────
 def build_smp_model(arch_key, encoder):
-    """Instantiate an smp model with the correct attention settings."""
     if arch_key == "deeplabv3plus":
         return smp.DeepLabV3Plus(
             encoder_name=encoder, encoder_weights=None,
@@ -134,7 +113,6 @@ def build_smp_model(arch_key, encoder):
 
 
 def _load_weights(model, ckpt_path):
-    """Load checkpoint handling all common dict key variants."""
     ckpt = torch.load(ckpt_path, map_location=DEVICE, weights_only=False)
     for key in ("model_state", "model_state_dict", "state_dict"):
         if isinstance(ckpt, dict) and key in ckpt:
@@ -144,7 +122,6 @@ def _load_weights(model, ckpt_path):
     return model
 
 
-# ── 5. Model Loading ──────────────────────────────────────────────────────────
 @st.cache_resource
 def load_new_model(model_name):
     arch_display, arch_key, encoder, train_ds = detect_arch(model_name)
@@ -156,10 +133,7 @@ def load_new_model(model_name):
 
 @st.cache_resource
 def load_old_model(model_name):
-    """
-    Old models (baseline_*) follow the same naming convention as new models,
-    so we use the same detect_arch() function — no hardcoded encoders.
-    """
+   
     arch_display, arch_key, encoder, train_ds = detect_arch(model_name)
     model = build_smp_model(arch_key, encoder).to(DEVICE)
     model = _load_weights(model, os.path.join(OLD_MODELS_DIR, model_name))
@@ -167,7 +141,7 @@ def load_old_model(model_name):
     return model, arch_display, encoder, train_ds
 
 
-# ── 6. Inference ──────────────────────────────────────────────────────────────
+# Inference
 def predict_lung_mask(model, input_image):
     img_pil     = Image.fromarray(input_image).convert("RGB")
     img_resized = img_pil.resize(IMG_SIZE)
@@ -198,12 +172,11 @@ def predict_lung_mask(model, input_image):
     }
 
 
-# ── 7. Streamlit UI ───────────────────────────────────────────────────────────
 st.set_page_config(page_title="Lung Segmentation v2", page_icon="🫁", layout="wide")
 st.title("🫁 Lung X-Ray Segmentation — Augmented Dataset Models")
 st.caption("New models trained on augmented CXR and COVID-QU-Ex datasets")
 
-# ── Sidebar ────────────────────────────────────────────────────────────────────
+#  Sidebar 
 with st.sidebar:
     st.header("⚙️ Settings")
     st.info(f"Device: **{DEVICE}**")
@@ -271,7 +244,7 @@ with st.sidebar:
             st.caption(f"  {arch} / {encoder} / {train_ds}")
 
 
-# ── Image Upload ───────────────────────────────────────────────────────────────
+#  Image Upload 
 uploaded_file = st.file_uploader("Upload an X-Ray image", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is None:
@@ -280,7 +253,7 @@ if uploaded_file is None:
 
 input_image = np.array(Image.open(uploaded_file).convert("RGB"))
 
-# ── Apply Enhancements ─────────────────────────────────────────────────────────
+# Apply Enhancements 
 if enhance_enabled and selected_enhancements:
     enhanced_image = input_image.copy()
     for name in selected_enhancements:
@@ -308,7 +281,7 @@ else:
 resized_input = np.array(Image.fromarray(process_image).resize(IMG_SIZE))
 
 
-# ── Helper: run and display one model ─────────────────────────────────────────
+# Helper: run and display one model 
 def display_result(model_name, binary_mask, overlay, prob_mask, stats, arch, encoder, train_ds):
     st.markdown(f"#### `{model_name.replace('_best.pth', '').replace('.pth', '')}`")
     st.caption(f"Arch: **{arch}** | Encoder: **{encoder}** | Trained on: **{train_ds}**")
@@ -334,7 +307,7 @@ def display_result(model_name, binary_mask, overlay, prob_mask, stats, arch, enc
     st.markdown("---")
 
 
-# ── SINGLE MODEL MODE ─────────────────────────────────────────────────────────
+# SINGLE MODEL MODE 
 if mode == "🔬 Single Model":
     if not available:
         st.error("No models found.")
@@ -354,7 +327,7 @@ if mode == "🔬 Single Model":
                 st.error(f"Error: {e}")
 
 
-# ── COMPARE ALL MODELS MODE ───────────────────────────────────────────────────
+#  COMPARE ALL MODELS MODE 
 elif mode == "📊 Compare All Models":
 
     if model_source == "⚖️ Compare Old vs New":
