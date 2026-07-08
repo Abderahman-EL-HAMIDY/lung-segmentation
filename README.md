@@ -24,6 +24,7 @@ This project builds a robust lung segmentation pipeline for chest X-ray images. 
 ## Project Structure
 
 - notebooks/
+  - Augmentation-notebooks/ — Notebooks for generating the augmented datasets (one for augmenting the CXR dataset, one for augmenting the COVID-QU-Ex dataset)
   - augmented_notebooks/ — Training notebooks NB02–NB14 (augmented datasets)
   - baseline_notebooks/ — Training on original datasets
   - comparison_notebooks/ — Final comparison notebook (NB15)
